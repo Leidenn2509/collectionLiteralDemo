@@ -1,0 +1,25 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.255-SNAPSHOT'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.255-SNAPSHOT'
+
+}
+
+compileKotlin {
+    kotlinOptions.freeCompilerArgs += "-Xuse-fir"
+}
+
+application {
+    mainClass = 'araish.Main'
+}
