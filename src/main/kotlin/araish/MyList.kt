@@ -27,6 +27,10 @@ class MyList<T> : Iterable<T> {
 
             }.apply(conf).build()
         }
+
+        fun <T> build(size: Int, conf: MyList<T>.() -> Unit = {}): MyList<T> {
+            return MyList<T>().apply(conf)
+        }
     }
 
     override fun iterator(): Iterator<T> {
