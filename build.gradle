@@ -7,13 +7,14 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
-    mavenLocal()
+    mavenLocal {
+        url 'file:kotlinRep/'
+    }
     mavenCentral()
 }
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.255-SNAPSHOT'
-
 }
 
 compileKotlin {

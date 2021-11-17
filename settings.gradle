@@ -1,6 +1,9 @@
 pluginManagement {
     repositories {
-        mavenLocal()
+//        mavenLocal()
+        mavenLocal {
+            url 'file:kotlinRep/'
+        }
         gradlePluginPortal()
     }
 }
