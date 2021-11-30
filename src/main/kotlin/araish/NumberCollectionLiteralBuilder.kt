@@ -1,16 +1,14 @@
 package araish
 
-open class NumberCollectionLiteralBuilder<N: Number, T: Number> : SeqCollectionLiteralBuilder<N, T> {
-    private val buf = mutableListOf<T>()
+open class NumberCollectionLiteralBuilder<N: Number, T: Number> : ListCollectionLiteralBuilder<N, T> {
+    private var buf = 0.0
 
     override fun add(element: T) {
-        buf.add(element)
+        buf += element.toDouble()
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun build(): N {
-        return buf.fold(0.0) { acc, e ->
-            acc + e.toDouble()
-        } as N
+        return buf as N
     }
 }

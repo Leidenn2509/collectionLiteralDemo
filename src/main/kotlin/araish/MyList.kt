@@ -10,11 +10,9 @@ class MyList<T> : Iterable<T> {
         content.add(element)
     }
 
-    fun get(index: Int): T = content.get(index)
-
     companion object {
-        fun <T> buildSeq(size: Int, conf: SeqCollectionLiteralBuilder<MyList<T>, T>.() -> Unit = {}): MyList<T> {
-            return object : SeqCollectionLiteralBuilder<MyList<T>, T> {
+        fun <T> buildList(size: Int, conf: ListCollectionLiteralBuilder<MyList<T>, T>.() -> Unit = {}): MyList<T> {
+            return object : ListCollectionLiteralBuilder<MyList<T>, T> {
                 private val buf = MyList<T>()
 
                 override fun add(element: T) {
@@ -28,12 +26,29 @@ class MyList<T> : Iterable<T> {
             }.apply(conf).build()
         }
 
-        fun <T> build(size: Int, conf: MyList<T>.() -> Unit = {}): MyList<T> {
-            return MyList<T>().apply(conf)
+        fun <T> buildMap(size: Int, conf: MapCollectionLiteralBuilder<MyList<T>, T, T>.() -> Unit = {}): MyList<T> {
+            return object : MapCollectionLiteralBuilder<MyList<T>, T, T> {
+                private val buf = MyList<T>()
+
+                override fun add(element: T, value: T) {
+                    buf.add(element)
+                    buf.add(value)
+                }
+
+                override fun build(): MyList<T> {
+                    return buf
+                }
+
+            }.apply(conf).build()
         }
+
     }
 
     override fun iterator(): Iterator<T> {
         return content.iterator()
+    }
+
+    override fun toString(): String {
+        return "MyList(content=$content, size=$size)"
     }
 }
