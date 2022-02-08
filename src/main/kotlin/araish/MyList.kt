@@ -1,13 +1,19 @@
 package araish
 
 class MyList<T> : Iterable<T> {
-    private val content = mutableListOf<T>()
+    private var content: MutableList<T> = mutableListOf<T>()
 
     val size: Int
         get() = content.size
 
     fun add(element: T) {
         content.add(element)
+    }
+    operator fun plus(other: MyList<T>): MyList<T> {
+        val res = MyList<T>()
+        val newContent = content + other.content
+        res.content = newContent.toMutableList()
+        return res
     }
 
     companion object {
