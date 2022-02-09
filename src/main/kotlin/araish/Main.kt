@@ -4,6 +4,8 @@ import araish.MyList.Companion.buildList
 import araish.MyList.Companion.buildMap
 import araish.C.Companion.buildList
 import araish.B.Companion.buildList
+import araish.over
+import araish.NullableBuilder.Companion.buildList
 
 
 
@@ -40,11 +42,26 @@ fun <T> expectMyList(myList: MyList<T>) {
     println("myList = [${myList}]\n")
 }
 
-//fun <T> fVariable(a: List<T>) {
-//    println("<top>.fVariable")
-//    a.forEach(::println)
-//    println()
-//}
+fun <T> over(a: MyList<T>) {
+    println("<top>.over(a: MyList<T> = [${a.map { it!!::class.simpleName }}])\n")
+}
+
+fun number(a: MyList<Number>) {
+    println("<top>.number(a = [${a}])\n")
+}
+
+
+fun anyVsMyList(a: Any) {
+    println("<top>.anyVsMyList(a: Any = [${a}])\n")
+}
+fun anyVsMyList(a: MyList<Int>) {
+    println("<top>.anyVsMyList(a: MyList<Int> = [${a}])\n")
+}
+
+
+fun <T> twoArg(a: T, b: MyList<T>) {
+    println("<top>.twoArg<${a!!::class.simpleName}>(a = [${a}], b = [${b.map { it to it!!::class.simpleName }}])\n")
+}
 
 fun <T: B> abc(e: T) {
     println("<top>.abc")
@@ -56,6 +73,14 @@ operator fun B.Companion.get(a: Int, b: Int, c: Int): List<Int> {
 }
 
 fun returnCL() = B [1]
+
+class NullableBuilder {
+    companion object {
+        fun <T> buildList(size: Int, conf: ListCollectionLiteralBuilder<NullableBuilder?, T>.() -> Unit = {}): NullableBuilder? {
+            return null
+        }
+    }
+}
 
 class Main {
     companion object {
@@ -105,6 +130,19 @@ class Main {
 
 //            val wrongArgumentType = MyList<String> [1, 2, 3]
 
+            over([1.0])
+
+            over([])
+
+            number([1, 1.0])
+
+            anyVsMyList([])
+
+            twoArg(1.0, [1, "2"])
+
+//            val notNull: NullableBuilder = [1, 0] // error no builder for NullableBuilder
+            val nullable: NullableBuilder? = [1, 0]
+            println("nullable=$nullable\n")
         }
 
     }

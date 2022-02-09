@@ -5,10 +5,14 @@ package araish
 //        println("Double.buildList()")
 //        return NumberCollectionLiteralBuilder<Double, Double>().apply(conf).build()
 //    }
-
-    fun MyList.Companion.buildList(size: Int, conf: ListCollectionLiteralBuilder<MyList<String>, String>.() -> Unit = {}): MyList<String> {
-        println("MyList<String>.buildList()")
-        return MyList.fromList(listOf("Const", "List", "Of", "Strings"))
-    }
+//
+//    fun MyList.Companion.buildList(size: Int, conf: ListCollectionLiteralBuilder<MyList<String>, String>.() -> Unit = {}): MyList<String> {
+//        println("MyList<String>.buildList()")
+//        return MyList.fromList(listOf("Const", "List", "Of", "Strings"))
+//    }
 //}
 
+
+fun over(a: MyList<Int>) {
+    println("<top>.over(a: MyList<Int> = [${a}])\n")
+}

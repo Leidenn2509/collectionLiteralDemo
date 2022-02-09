@@ -1,32 +1,26 @@
 package araish
 
-class MyList<T> : Iterable<T> {
-    private var content: MutableList<T> = mutableListOf<T>()
+class MyList<out T>(list: List<T>) : List<T> {
+    private var content: MutableList<T> = list.toMutableList()
 
-    val size: Int
+    override val size: Int
         get() = content.size
 
-    fun add(element: T) {
-        content.add(element)
-    }
-    operator fun plus(other: MyList<T>): MyList<T> {
-        val res = MyList<T>()
-        val newContent = content + other.content
-        res.content = newContent.toMutableList()
-        return res
+    operator fun plus(other: MyList<@UnsafeVariance T>): MyList<T> {
+        return MyList(content + other.toList())
     }
 
     companion object {
         fun <T> buildList(size: Int, conf: ListCollectionLiteralBuilder<MyList<T>, T>.() -> Unit = {}): MyList<T> {
             return object : ListCollectionLiteralBuilder<MyList<T>, T> {
-                private val buf = MyList<T>()
+                private val buf = mutableListOf<T>()
 
                 override fun add(element: T) {
                     buf.add(element)
                 }
 
                 override fun build(): MyList<T> {
-                    return buf
+                    return MyList(buf)
                 }
 
             }.apply(conf).build()
@@ -34,24 +28,19 @@ class MyList<T> : Iterable<T> {
 
         fun <T> buildMap(size: Int, conf: MapCollectionLiteralBuilder<MyList<T>, T, T>.() -> Unit = {}): MyList<T> {
             return object : MapCollectionLiteralBuilder<MyList<T>, T, T> {
-                private val buf = MyList<T>()
+                private val buf = mutableListOf<T>()
 
-                override fun add(element: T, value: T) {
-                    buf.add(element)
+                override fun add(key: T, value: T) {
+                    buf.add(key)
                     buf.add(value)
                 }
 
                 override fun build(): MyList<T> {
-                    return buf
+                    return MyList(buf)
                 }
 
             }.apply(conf).build()
         }
-
-        fun <T> fromList(list: List<T>): MyList<T> = MyList<T>().apply {
-            content = list.toMutableList()
-        }
-
     }
 
     override fun iterator(): Iterator<T> {
@@ -60,5 +49,45 @@ class MyList<T> : Iterable<T> {
 
     override fun toString(): String {
         return "MyList(content=$content, size=$size)"
+    }
+
+    override fun contains(element: @UnsafeVariance T): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun containsAll(elements: Collection<@UnsafeVariance T>): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun get(index: Int): T {
+        TODO("Not yet implemented")
+    }
+
+    override fun indexOf(element: @UnsafeVariance T): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun isEmpty(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun lastIndexOf(element: @UnsafeVariance T): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun listIterator(): ListIterator<T> {
+        TODO("Not yet implemented")
+    }
+
+    override fun listIterator(index: Int): ListIterator<T> {
+        TODO("Not yet implemented")
+    }
+
+    override fun subList(fromIndex: Int, toIndex: Int): List<T> {
+        TODO("Not yet implemented")
+    }
+
+    init {
+        content = list.toMutableList()
     }
 }
