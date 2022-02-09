@@ -48,6 +48,10 @@ class MyList<T> : Iterable<T> {
             }.apply(conf).build()
         }
 
+        fun <T> fromList(list: List<T>): MyList<T> = MyList<T>().apply {
+            content = list.toMutableList()
+        }
+
     }
 
     override fun iterator(): Iterator<T> {

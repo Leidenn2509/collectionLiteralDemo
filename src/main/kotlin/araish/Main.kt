@@ -1,5 +1,12 @@
 package araish
 
+import araish.MyList.Companion.buildList
+import araish.MyList.Companion.buildMap
+import araish.C.Companion.buildList
+import araish.B.Companion.buildList
+
+
+
 fun <T> List.Companion.buildList(size: Int, conf: ListCollectionLiteralBuilder<List<T>, T>.() -> Unit = {}): List<T> {
     return TODO()
 }
@@ -10,6 +17,7 @@ fun <T : Number> Int.Companion.buildList(size: Int, conf: ListCollectionLiteralB
 }
 
 fun <T: Number> Double.Companion.buildList(size: Int, conf: ListCollectionLiteralBuilder<Double, T>.() -> Unit = {}): Double {
+    println("Double.buildList<T>()")
     return NumberCollectionLiteralBuilder<Double, T>().apply(conf).build()
 }
 
@@ -28,15 +36,19 @@ fun <K, V> Double.Companion.buildMap(size: Int, conf: MapCollectionLiteralBuilde
 }
 
 fun <T> expectMyList(myList: MyList<T>) {
-    println("myList = [${myList}]")
+    println("<top>.expectMyList")
+    println("myList = [${myList}]\n")
 }
 
-fun <T> fVariable(a: List<T>) {
-    a.forEach(::println)
-}
+//fun <T> fVariable(a: List<T>) {
+//    println("<top>.fVariable")
+//    a.forEach(::println)
+//    println()
+//}
 
 fun <T: B> abc(e: T) {
-    println("abc.e=$e")
+    println("<top>.abc")
+    println("abc.e=$e\n")
 }
 
 operator fun B.Companion.get(a: Int, b: Int, c: Int): List<Int> {
@@ -50,12 +62,13 @@ class Main {
         @JvmStatic
         fun main(args: Array<String>) {
             val a: MyList<Int> = [1, 2]
-            val b = a + [3, 4] // Does not work
-            println(b)
-//            return
+            val b = a + [3, 4]
+            println("a=$a\nb=$b\n")
 //
-            val c: Double = [1, 2]
-            println("b = $c\n")
+            val c: Double = [1, 2] // buildList<Int>
+            println("c=$c\n")
+            val cc = Double [1.0, 2.0] // buildList
+            println("cc=$cc\n")
 //
             val myList: MyList<Int> = [1, 2, 3]
             myList.forEachIndexed { index, i ->
@@ -70,26 +83,28 @@ class Main {
             println()
 //
             val doubleMap: Double = [1.0: 1.0, 2.0: 2.0]
-            println("doubleMap = $doubleMap")
-            println()
+            println("doubleMap = $doubleMap\n")
 
-//            val d = [1, 2, 3]
+//            val d = [1, 2, 3] // error no companion object in List
 
-//            expectMyList([1, 2, 3])
-
-//            fVariable([1, 2, 3])
+            expectMyList([1, 2, 3])
 
             abc([1, 2, 3])
+
+            println("returnB=${returnCL()}\n")
+
+//            val empty: MyList<String> = [] // error: buildList shadowed by buildList<T>
+//            println("empty=$empty")
+//            println("empty.qualifiedName=${empty::class.qualifiedName}\n")
+
+            val typed = MyList<Short> [1, 2, 3]
+            typed.forEachIndexed { i, a ->
+                println("MyList<Short>[$i]=$a with type ${a::class.javaPrimitiveType}")
+            }
             println()
 
-            println("returnB=${returnCL()}")
-            println()
+//            val wrongArgumentType = MyList<String> [1, 2, 3]
 
-            val cc: MyList<String> = []
-            println("cc=$cc")
-            println("cc.qualifiedName=${cc::class.qualifiedName}")
-
-            val ccc = MyList<String> = [1, 2, 3]
         }
 
     }
