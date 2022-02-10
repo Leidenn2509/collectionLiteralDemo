@@ -60,7 +60,7 @@ fun anyVsMyList(a: MyList<Int>) {
 
 
 fun <T> twoArg(a: T, b: MyList<T>) {
-    println("<top>.twoArg<${a!!::class.simpleName}>(a = [${a}], b = [${b.map { it to it!!::class.simpleName }}])\n")
+    println("<top>.twoArg(a = [${a}], b = [${b.map { it to it!!::class.simpleName }}])\n")
 }
 
 fun <T: B> abc(e: T) {
@@ -138,7 +138,7 @@ class Main {
 
             anyVsMyList([])
 
-            twoArg(1.0, [1, "2"])
+            twoArg(1.0, [1, "2"]) // T = it(kotlin/Comparable<*> & java/io/Serializable)
 
 //            val notNull: NullableBuilder = [1, 0] // error no builder for NullableBuilder
             val nullable: NullableBuilder? = [1, 0]
